@@ -13,3 +13,15 @@ JOIN orders o ON o.customer_id = c.customer_id
 JOIN order_items oi ON oi.order_id = o.order_id
 JOIN products p ON p.product_id = oi.product_id
 ORDER BY o.order_date,o.order_id
+
+
+
+-- Customers + orders (LEFT JOIN)
+-- Shows all customers, even if they have no orders
+SELECT
+  c.full_name,
+  o.order_id
+FROM customers c
+LEFT JOIN orders o
+  ON c.customer_id = o.customer_id
+ORDER BY c.full_name, o.order_id;
