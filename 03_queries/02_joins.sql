@@ -1,5 +1,5 @@
 
--- 2) Show what each customer bought (JOIN across 4 tables)
+-- 1) Show what each customer bought (JOIN across 4 tables)
 SELECT 
 c.full_name,
 o.order_id,
