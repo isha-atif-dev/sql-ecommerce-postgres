@@ -46,3 +46,62 @@ JOIN orders o ON o.customer_id = c.customer_id
 GROUP BY c.full_name
 HAVING COUNT(DISTINCT o.order_id) > 1
 ORDER BY orders_count DESC;
+
+
+-- 6) UK customers who spent more than 1000 total
+SELECT
+  c.full_name,
+  SUM(oi.quantity * oi.price) AS total_spent
+FROM customers c
+JOIN orders o
+  ON c.customer_id = o.customer_id
+JOIN order_items oi
+  ON o.order_id = oi.order_id
+WHERE c.country = 'UK'
+GROUP BY c.full_name
+HAVING SUM(oi.quantity * oi.price) > 1000
+ORDER BY total_spent DESC;
+
+-- 7) Total revenue per order
+SELECT
+  o.order_id,
+  SUM(oi.quantity * oi.price) AS order_total
+FROM orders o
+JOIN order_items oi
+  ON o.order_id = oi.order_id
+GROUP BY o.order_id
+ORDER BY o.order_id ASC;
+
+
+-- 8) Total spending per customer
+SELECT
+  c.full_name,
+  SUM(oi.quantity * oi.price) AS total_spent
+FROM customers c
+JOIN orders o
+  ON c.customer_id = o.customer_id
+JOIN order_items oi
+  ON o.order_id = oi.order_id
+GROUP BY c.full_name
+ORDER BY total_spent DESC;
+
+-- 9) Revenue by product category
+SELECT
+  p.category,
+  SUM(oi.quantity * oi.price) AS total_revenue
+FROM products p
+JOIN order_items oi
+  ON oi.product_id = p.product_id
+GROUP BY p.category
+ORDER BY total_revenue DESC;
+
+-- 10) Top 3 best-selling products (by quantity)
+SELECT
+  p.product_name,
+  SUM(oi.quantity) AS units_sold
+FROM products p
+JOIN order_items oi
+  ON oi.product_id = p.product_id
+GROUP BY p.product_name
+ORDER BY units_sold DESC
+LIMIT 3;
